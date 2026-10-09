@@ -1,0 +1,9 @@
+.devenv*
+.direnv
+devenv.local.nix
+/build/
+/.build/
+*.bin
+*.hex
+!/vendor/oryx/*.bin
+__pycache__/
