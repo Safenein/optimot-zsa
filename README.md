@@ -70,12 +70,24 @@ direct demande les règles udev : `hardware.keyboard.zsa.enable = true;`.
 
 Le firmware Oryx d'origine est gardé dans `vendor/oryx/`, pour revenir en arrière.
 
+## Suivi des mises à jour d'Optimot
+
+Le workflow Forgejo `.forgejo/workflows/upstream.yml` tourne chaque jour. Il compare le pilote Linux
+Ergo publié sur optimot.fr à `vendor/optimot/`. En cas de différence, le job échoue et une issue est
+ouverte. Pour intégrer la nouvelle version :
+
+```sh
+python3 tools/check_upstream.py --update   # remplace vendor/optimot/
+devenv shell run-tests && devenv shell build
+```
+
 ## Organisation
 
 | Chemin | Rôle |
 |---|---|
 | `vendor/optimot/` | pilote Linux officiel Optimot Ergo 1.8.0 (`.xkb`, `.XCompose`, licence) |
 | `vendor/oryx/` | export de la configuration Oryx et firmware d'origine |
+| `tools/check_upstream.py` | compare `vendor/optimot/` au pilote publié sur optimot.fr |
 | `tools/gen_optimot.py` | génère `optimot_tables.h` (niveaux, trie des touches mortes, table AZERTY) |
 | `keyboards/zsa/moonlander/keymaps/optimot/` | keymap QMK (userspace) |
 | `  optimot.c` | moteur pur : niveaux, raccourcis, touches mortes (testé sur l'hôte) |

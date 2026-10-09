@@ -1,0 +1,34 @@
+# Vérifie chaque jour si le pilote Optimot Ergo publié sur optimot.fr a changé
+# par rapport à vendor/optimot/. En cas de mise à jour, le job échoue et une issue
+# est ouverte (une seule à la fois).
+name: Optimot amont
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".forgejo/workflows/upstream.yml"
+      - "tools/check_upstream.py"
+      - "vendor/optimot/**"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: docker
+    container:
+      image: node:20-bookworm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comparer avec optimot.fr
+        env:
+          FORGEJO_API: ${{ github.server_url }}/api/v1
+          FORGEJO_REPO: ${{ github.repository }}
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/check_upstream.py --report-issue
