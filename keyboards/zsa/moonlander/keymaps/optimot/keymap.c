@@ -101,7 +101,7 @@ static void set_os_mode(os_mode_t mode) {
 // --- Optimot -----------------------------------------------------------------------
 
 static bool altgr; // AltGr Optimot (KC_RALT), jamais transmis tel quel à l'hôte
-static bool caps;  // Verr. Maj Optimot (KC_CAPS), suit les types xkb
+static bool caps;  // Verr. Maj Optimot (Maj+KC_CAPS), suit les types xkb
 
 // Ce qui est maintenu par position pour garder la répétition automatique de l'hôte.
 static uint8_t held_kc[OPT_NPOS];
@@ -229,14 +229,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
+    // Équivalent de l'option xkb caps:escape_shifted_capslock, sur toutes les couches :
+    // Verr. Maj seule = Échap, Maj+Verr. Maj = verrouillage (celui de l'hôte en Gaming).
+    if (keycode == KC_CAPS) {
+        static bool esc_held;
+        if (pressed) {
+            if ((get_mods() | get_oneshot_mods()) & MOD_MASK_SHIFT) {
+                if (IS_LAYER_ON(GAMING))
+                    tap_code(KC_CAPS);
+                else
+                    caps = !caps;
+            } else {
+                opt_compose_cancel();
+                register_code(KC_ESC);
+                esc_held = true;
+            }
+        } else if (esc_held) {
+            unregister_code(KC_ESC);
+            esc_held = false;
+        }
+        return false;
+    }
+
     if (IS_LAYER_ON(GAMING)) return true;
 
     if (keycode == KC_RALT) {
         altgr = pressed;
-        return false;
-    }
-    if (keycode == KC_CAPS) {
-        if (pressed) caps = !caps;
         return false;
     }
 

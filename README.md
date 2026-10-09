@@ -8,8 +8,11 @@ le clavier envoie toujours `KC_Q`, `KC_SCLN`…, mais le firmware les traduit co
 Optimot de l'OS.
 
 - **4 niveaux** : base, Maj, AltGr (touche `KC_RALT`), AltGr+Maj.
-- **Verr. Maj** (touche `KC_CAPS`) : elle est gérée dans le clavier et respecte les types de touches
-  d'Optimot. Par exemple, la rangée du haut donne alors les chiffres. Une LED blanche l'indique.
+- **Touche Verr. Maj** (`KC_CAPS`) : elle fonctionne comme l'option xkb `caps:escape_shifted_capslock`,
+  sur toutes les couches. Seule, elle donne Échap. Avec Maj, elle active ou coupe le verrouillage
+  majuscules. Ce verrouillage est géré dans le clavier et respecte les types de touches d'Optimot :
+  par exemple, la rangée du haut donne alors les chiffres. Une LED blanche l'indique. En Gaming,
+  c'est le verrouillage de l'hôte qui bascule.
 - **Caps Word** (`CW_TOGG`, ou double Maj) : il met en majuscules toutes les lettres Optimot, é, à, ç… compris.
 - **Toutes les touches mortes** du pilote Linux officiel : ^ ¨ ´ ` ~ ¸ ˚ ˇ ¯ ˘ ˙ ̛ ¤, plus les touches
   mortes ∞ (sciences), µ (grec), ж (cyrillique), ø, Ľ, ↑ ↓ →. Cela fait 8 102 séquences.
