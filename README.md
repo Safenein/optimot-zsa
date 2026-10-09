@@ -8,8 +8,8 @@ le clavier envoie toujours `KC_Q`, `KC_SCLN`…, mais le firmware les traduit co
 Optimot de l'OS.
 
 - **4 niveaux** : base, Maj, AltGr (touche `KC_RALT`), AltGr+Maj.
-- **Touche Verr. Maj** (`KC_CAPS`) : elle fonctionne comme l'option xkb `caps:escape_shifted_capslock`,
-  sur toutes les couches. Seule, elle donne Échap. Avec Maj, elle active ou coupe le verrouillage
+- **Touches Verr. Maj** (`KC_CAPS`, à gauche du A comme sur un AZERTY, et à droite du T) : elles fonctionnent comme l'option xkb `caps:escape_shifted_capslock`,
+  sur toutes les couches. Seule, chacune donne Échap. Avec Maj, elle active ou coupe le verrouillage
   majuscules. Ce verrouillage est géré dans le clavier et respecte les types de touches d'Optimot :
   par exemple, la rangée du haut donne alors les chiffres. Une LED blanche l'indique. En Gaming,
   c'est le verrouillage de l'hôte qui bascule.
