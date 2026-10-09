@@ -29,7 +29,9 @@ jobs:
       - name: Checkout ${{ github.sha }}
         run: |
           rm -rf src
-          git clone --depth 1 --branch "$GITHUB_REF_NAME" "http://$FORGEJO_HOST/$GITHUB_REPOSITORY.git" src
+          # Clone complet (dépôt léger) : $GITHUB_SHA n'est pas forcément la tête
+          # de la branche (run relancé, push suivant déjà arrivé).
+          git clone --quiet "http://$FORGEJO_HOST/$GITHUB_REPOSITORY.git" src
           git -C src checkout --detach "$GITHUB_SHA"
 
       - name: Comparer avec optimot.fr
