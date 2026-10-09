@@ -125,11 +125,6 @@ def main():
     summary = "\n".join(lines)
     print(summary)
 
-    step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
-    if step_summary:
-        state = "Mise à jour disponible" if changed else "À jour"
-        Path(step_summary).write_text(f"## Pilote Optimot : {state}\n\n{summary}\n")
-
     if not changed:
         print("à jour")
         return 0
