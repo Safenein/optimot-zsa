@@ -1,4 +1,4 @@
-# Vérifie chaque jour si le pilote Optimot Ergo publié sur optimot.fr a changé
+# Vérifie chaque semaine si le pilote Optimot Ergo publié sur optimot.fr a changé
 # par rapport à vendor/optimot/. En cas de mise à jour, le job échoue et une issue
 # est ouverte (une seule à la fois).
 #
@@ -9,7 +9,7 @@ name: Optimot amont
 
 on:
   schedule:
-    - cron: "17 6 * * *"
+    - cron: "17 6 * * 1" # lundi 06:17 UTC
   workflow_dispatch:
   push:
     branches: [main]

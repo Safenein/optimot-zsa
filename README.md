@@ -72,7 +72,7 @@ Le firmware Oryx d'origine est gardé dans `vendor/oryx/`, pour revenir en arri�
 
 ## Suivi des mises à jour d'Optimot
 
-Le workflow Forgejo `.forgejo/workflows/upstream.yml` tourne chaque jour. Il compare le pilote Linux
+Le workflow Forgejo `.forgejo/workflows/upstream.yml` tourne chaque lundi. Il compare le pilote Linux
 Ergo publié sur optimot.fr à `vendor/optimot/`. En cas de différence, le job échoue et une issue est
 ouverte. Pour intégrer la nouvelle version :
 
