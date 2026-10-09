@@ -1,6 +1,10 @@
 # Vérifie chaque jour si le pilote Optimot Ergo publié sur optimot.fr a changé
 # par rapport à vendor/optimot/. En cas de mise à jour, le job échoue et une issue
 # est ouverte (une seule à la fois).
+#
+# Runner natif de toumart (label nix:host) : pas de Node ni de Python sur l'hôte,
+# donc clone manuel et Python via nix. FORGEJO_TOKEN (fleet-bot) vient de
+# l'env_file du runner.
 name: Optimot amont
 
 on:
@@ -14,21 +18,22 @@ on:
       - "tools/check_upstream.py"
       - "vendor/optimot/**"
 
-permissions:
-  contents: read
-  issues: write
+env:
+  FORGEJO_HOST: 10.42.0.80:3000
 
 jobs:
   check:
-    runs-on: docker
-    container:
-      image: node:20-bookworm
+    runs-on: nix
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ github.sha }}
+        run: |
+          rm -rf src
+          git clone --depth 1 --branch "$GITHUB_REF_NAME" "http://$FORGEJO_HOST/$GITHUB_REPOSITORY.git" src
+          git -C src checkout --detach "$GITHUB_SHA"
 
       - name: Comparer avec optimot.fr
-        env:
-          FORGEJO_API: ${{ github.server_url }}/api/v1
-          FORGEJO_REPO: ${{ github.repository }}
-          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 tools/check_upstream.py --report-issue
+        run: |
+          cd src
+          FORGEJO_API="http://$FORGEJO_HOST/api/v1" FORGEJO_REPO="$GITHUB_REPOSITORY" \
+            nix shell nixpkgs#python3 -c python3 tools/check_upstream.py --report-issue
